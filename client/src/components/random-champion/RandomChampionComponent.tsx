@@ -5,7 +5,7 @@ import { ChampionSummary } from "../../services/Types";
 
 
 
-const RandomChampionComponent: FC<{}> = ({ }) => {
+const RandomChampionComponent: FC = () => {
     const [championCountSelection, setChampionCountSelection] = useState<number>(1);
     const [randomChampions, setRandomChampions] = useState<ChampionSummary[]>([]);
 

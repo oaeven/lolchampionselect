@@ -1,9 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
+// import React from 'react';
+// import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import ChampionListComponent from './components/champion-list/ChampionListComponent';
-import { Button, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import RandomChampionComponent from './components/random-champion/RandomChampionComponent';
 
 function App() {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import ChampionService from '../../services/ChampionService';
 import { ChampionSummary } from '../../services/Types';
 
-const ChampionListComponent: FC<{}> = ({ }) => {
+const ChampionListComponent: FC = () => {
     const [championList, setChampionList] = useState<ChampionSummary[]>([]);
 
     useEffect(() => {

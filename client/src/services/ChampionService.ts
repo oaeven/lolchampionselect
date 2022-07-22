@@ -18,9 +18,15 @@ function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
   }
 
-const getRandomChampion = () : ChampionSummary => {
+const getRandomChampions = (count: number) : ChampionSummary[] => {
     var championList = getChampionList();
-    return championList[getRandomInt(championList.length)];
+
+    var randomChampionList : ChampionSummary[] = [];
+    for(let i = 0; i < count; i++){
+        randomChampionList.push(championList[getRandomInt(championList.length)]);
+    }
+
+    return randomChampionList;
 }
 
 // const postDocumentsToEmail = async (pploadExistingDocumentToEmail: UploadExistingDocumentToEmail) => {
@@ -47,7 +53,7 @@ const getRandomChampion = () : ChampionSummary => {
 
 const ChampionService = {
     getChampionList,
-    getRandomChampion
+    getRandomChampions
 };
 
 export default ChampionService;

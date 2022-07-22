@@ -18,6 +18,6 @@ it('Get champion with all fields', () => {
 });
 
 it('Get random champion with all fields', () => {
-    const randomChampion = ChampionService.getRandomChampion();
-    expect(randomChampion.name.length).toBeGreaterThan(3);
+    const randomChampions = ChampionService.getRandomChampions(1);
+    expect(randomChampions[0].name.length).toBeGreaterThan(3);
 });

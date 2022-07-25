@@ -1,13 +1,15 @@
+import styles from './RandomChampion.module.css';
 import { FC, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import CopyToClipboard from "react-copy-to-clipboard";
 import ChampionService from "../../services/ChampionService";
 import { ChampionSummary } from "../../services/Types";
 
-
-
 const RandomChampionComponent: FC = () => {
+    const [copyToClipboardText, setCopyToClipboardText] = useState<string>('');
     const [championCountSelection, setChampionCountSelection] = useState<number>(1);
     const [randomChampions, setRandomChampions] = useState<ChampionSummary[]>([]);
+    const [copyButtonText, setCopyButtonText] = useState<string>('Copy');
 
     const randomChampionElements = randomChampions.map((championSummary, key) => {
         return (
@@ -15,25 +17,45 @@ const RandomChampionComponent: FC = () => {
         )
     });
 
+    const generatedChampionsText = (champions: ChampionSummary[]) => {
+        let championText = '';
+
+        champions.forEach((championSummary, index) => {
+            championText += `Player ${index + 1}: ${championSummary.name} \n`;
+        });
+
+        setCopyToClipboardText(championText);
+    };
+
     const handleChampionCountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = parseInt(event.target.value);
         setChampionCountSelection(selectedValue);
         console.log(selectedValue);
-    }
+    };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         event.stopPropagation();
 
-        setRandomChampions(ChampionService.getRandomChampions(championCountSelection));
-    }
+        const newRandomChampions = ChampionService.getRandomChampions(championCountSelection);
+        setRandomChampions(newRandomChampions);
+        generatedChampionsText(newRandomChampions);
+    };
+
+    const copyText = () => {
+        console.log("copy text button clicked");
+
+        setCopyButtonText('Copied!');
+        setTimeout(() => {
+            setCopyButtonText('Copy');
+        }, 1000)
+    };
 
     return (
         <>
             <h2>Generate random champions</h2>
-
-            <Form onSubmit={handleSubmit} className="random-champion-form py-3">
-                <Form.Group controlId="championCount" as={Row} className="pb-3">
+            <Form onSubmit={handleSubmit} className={styles.form}>
+                <Form.Group controlId="championCount" as={Row} className="p-3">
                     <Form.Label column sm="2">Number of Champions</Form.Label>
 
                     <Col sm="2">
@@ -47,11 +69,20 @@ const RandomChampionComponent: FC = () => {
                     </Col>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="random-champion-button mb-3">
+                <Button variant="primary" type="submit" className="mb-3 mx-3">
                     Generate
                 </Button>
 
-                {randomChampions && <div>{randomChampionElements}</div>}
+                {randomChampions.length > 0 && <div className={`${styles.formRandomData} p-3`}>
+
+                    <div className="float-end">
+                        <CopyToClipboard text={copyToClipboardText} onCopy={() => copyText()}>
+                            <Button variant="outline-primary" size="sm">{copyButtonText}</Button>
+                        </CopyToClipboard>
+                    </div>
+
+                    <div>{randomChampionElements}</div>
+                </div>}
 
             </Form>
         </>

@@ -1,15 +1,24 @@
 import styles from './RandomChampion.module.css';
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import CopyToClipboard from "react-copy-to-clipboard";
 import ChampionService from "../../services/ChampionService";
 import { ChampionSummary } from "../../services/Types";
+import VersionService from '../../services/VersionService';
 
 const RandomChampionComponent: FC = () => {
+    const [patchVersion, setPatchVersion] = useState<string | undefined>(undefined);
     const [copyToClipboardText, setCopyToClipboardText] = useState<string>('');
     const [championCountSelection, setChampionCountSelection] = useState<number>(1);
     const [randomChampions, setRandomChampions] = useState<ChampionSummary[]>([]);
     const [copyButtonText, setCopyButtonText] = useState<string>('Copy');
+
+    useEffect(() => {
+        VersionService.getLatestVersion().then(patchVersion => {
+            setPatchVersion(patchVersion);
+            console.log('use effect get patch version');
+        });
+    }, []);
 
     const randomChampionElements = randomChampions.map((championSummary, key) => {
         return (
@@ -33,11 +42,11 @@ const RandomChampionComponent: FC = () => {
         console.log(selectedValue);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         event.stopPropagation();
 
-        const newRandomChampions = ChampionService.getRandomChampions(championCountSelection);
+        const newRandomChampions = await ChampionService.getRandomChampions(championCountSelection);
         setRandomChampions(newRandomChampions);
         generatedChampionsText(newRandomChampions);
     };
@@ -53,7 +62,12 @@ const RandomChampionComponent: FC = () => {
 
     return (
         <>
-            <h2>Generate random champions</h2>
+            {patchVersion && <div className="float-end ">
+                <small>Patch version: {patchVersion}</small>
+            </div>}
+
+            <h2 className='pb-2'>Generate random champions</h2>
+
             <Form onSubmit={handleSubmit} className={styles.form}>
                 <Form.Group controlId="championCount" as={Row} className="p-3">
                     <Form.Label column sm="2">Number of Champions</Form.Label>

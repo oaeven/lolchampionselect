@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api',
+const AxiosHttpClient = axios.create({
+    baseURL: 'https://ddragon.leagueoflegends.com/',
     headers: {
         'content-type':'application/json',
         Accept: 'application/json',
@@ -9,16 +9,8 @@ const AxiosInstance = axios.create({
     },
 });
 
-// axiosInstance.interceptors.request.use(function (config) {
-//     // Do something before request is sent
-//     return config;
-//   }, function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-//   });
-
 // Add a response interceptor
-AxiosInstance.interceptors.response.use(function (response) {
+AxiosHttpClient.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
 
@@ -35,5 +27,5 @@ AxiosInstance.interceptors.response.use(function (response) {
     return Promise.reject(error);
   });
 
-export default AxiosInstance;
+export default AxiosHttpClient;
 

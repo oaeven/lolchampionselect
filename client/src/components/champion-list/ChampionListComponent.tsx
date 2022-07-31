@@ -6,12 +6,11 @@ const ChampionListComponent: FC = () => {
     const [championList, setChampionList] = useState<ChampionSummary[]>([]);
 
     useEffect(() => {
-        const championList = ChampionService.getChampionList();
-        setChampionList(championList);
-
-        console.log('use effect set champion list');
-
-        // Update the document title using the browser API
+        ChampionService.getChampionList().then(championList => {
+            setChampionList(championList);
+            console.log('use effect set champion list');
+        });
+        
     }, []);
 
     const championElements = championList.map((championSummary, key) => {
@@ -22,7 +21,7 @@ const ChampionListComponent: FC = () => {
 
     return (
         <div className="pt-5">
-            <h2>Complete champion list</h2>
+            <h2 className='pb-2'>Complete champion list</h2>
             {championElements}
         </div>
     );

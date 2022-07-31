@@ -3,7 +3,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import ChampionListComponent from './components/champion-list/ChampionListComponent';
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import RandomChampionComponent from './components/random-champion/RandomChampionComponent';
 
 function App() {
@@ -25,15 +25,10 @@ function App() {
       </header> */}
 
         <Container>
-          <h1 className="pb-5">LOL Champion Select</h1>
+          <h1 className="py-5">LOL Champion Select</h1>
 
-          <Row>
-            <RandomChampionComponent></RandomChampionComponent>
-          </Row>
-
-          <Row>
-            <ChampionListComponent></ChampionListComponent>
-          </Row>
+          <RandomChampionComponent></RandomChampionComponent>
+          <ChampionListComponent></ChampionListComponent>
 
         </Container>
     </div>

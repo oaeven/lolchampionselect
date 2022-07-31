@@ -7,8 +7,8 @@ const getChampionList = async () : Promise<ChampionSummary[]> => {
     // http://ddragon.leagueoflegends.com/cdn/12.14.1/data/en_US/champion.json
     const version = await VersionService.getLatestVersion();
 
-    return AxiosHttpClient.get(`cdn/${version}/data/en_US/champion.json`).then(result => {
-        return parseChampionDataObject(result.data);
+    return AxiosHttpClient.get<any, ChampionSource>(`cdn/${version}/data/en_US/champion.json`).then(result => {
+        return parseChampionDataObject(result);
     });
 };
 
@@ -28,30 +28,34 @@ function parseChampionDataObject(championData : ChampionSource) : ChampionSummar
     return championArray;
 }
 
-function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-};
-
 const getRandomChampions = async (count: number) : Promise<ChampionSummary[]> => {
     var championList = await getChampionList();
-
-    var randomChampionList : ChampionSummary[] = [];
-    for(let i = 0; i < count; i++){
-        randomChampionList.push(championList[getRandomInt(championList.length)]);
-    }
-
-    return randomChampionList;
+    return getRandomChampionList(count, championList);
 };
 
 const getRandomChampionsMock = (count: number) : ChampionSummary[] => {
     var championList = getChampionListMock();
+    return getRandomChampionList(count, championList);
+};
 
-    var randomChampionList : ChampionSummary[] = [];
-    for(let i = 0; i < count; i++){
-        randomChampionList.push(championList[getRandomInt(championList.length)]);
+function getRandomChampionList(count : number, championList : ChampionSummary[]) : ChampionSummary[] {
+    let currentCount = 0;
+    let randomChampionList : ChampionSummary[] = [];
+    
+    while(currentCount < count) {
+        const randomChampion = championList[getRandomInt(championList.length)];
+
+        if(!randomChampionList.some(c => c.name === randomChampion.name)){
+            randomChampionList.push(randomChampion);
+            currentCount++;
+        }
     }
 
     return randomChampionList;
+};
+
+function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
 };
 
 const ChampionService = {

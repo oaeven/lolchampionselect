@@ -5,7 +5,7 @@ const AxiosHttpClient = axios.create({
     headers: {
         'content-type':'application/json',
         Accept: 'application/json',
-        // Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcGVyc3NvbiIsInJvbGVzIjoiU1RBTkRBUkRfVVNFUixTVVBFUl9VU0VSIiwiZXhwIjoxNTkyOTE1MDI3fQ.kkCk8Dzz-134cmFYv1zbw6pgdkVqeGNAuxXv8LyJ0u0'
+        // Authorization: 'Bearer tokenishere'
     },
 });
 
